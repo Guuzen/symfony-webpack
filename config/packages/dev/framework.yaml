@@ -1,0 +1,3 @@
+framework:
+    assets:
+        base_url: '%env(ASSETS_BASE_URL)%'

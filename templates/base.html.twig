@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% include 'favicons.html.twig' %}
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}
+        {% endblock %}
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+        {% block javascripts %}
+            <script src="{{ asset('assets/runtime.js') }}"></script>
+            <script src="{{ asset('assets/vendors.js') }}"></script>
+        {% endblock %}
+    </body>
+    <h1>bbbbb</h1>
+    <h1>bbbbb</h1>
+    <h1>bbbbb</h1>
+</html>

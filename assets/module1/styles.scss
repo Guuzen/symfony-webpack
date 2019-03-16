@@ -1,0 +1,42 @@
+/*.example-wrapper {*/
+    /*margin: 1em auto;*/
+    /*max-width: 800px;*/
+    /*width: 95%;*/
+    /*font: 20px/1.5 sans-serif;*/
+/*}*/
+/*.example-wrapper code {*/
+    /*background: #F5F5F5;*/
+    /*padding: 2px 6px;*/
+/*}*/
+$fa-font-path: "~font-awesome/fonts/";
+@import "~font-awesome/scss/font-awesome.scss";
+@import "feature/feature";
+
+@font-face {
+    font-family: 'YourFontName';
+    src: url('glyphicons-halflings-regular.eot');
+}
+.main {
+    &_red {
+        color: green;
+        background: url("./pics/Antarctica-7-2MB3.jpg");
+        font-family: 'YourFontName', serif;
+    }
+    &_blue {
+        color: green;
+    }
+}
+
+.red {
+    color: red;
+}
+
+.pink {
+    color: red;
+}
+.example {
+    display: grid;
+    transition: all .5s;
+    user-select: none;
+    background: linear-gradient(to bottom, white, black);
+}

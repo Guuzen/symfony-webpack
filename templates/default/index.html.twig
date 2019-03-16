@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/module1.css') }}">
+{% endblock %}
+{% block body %}
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    This friendly message is coming from:444
+    <ul class="main">
+        <li class="main_red ">Your controller at <code><a href="{{ 'src/Controller/DefaultController.php'|file_link(0) }}">src/Controller/DefaultController.php</a></code></li>
+        <li class="main_blue">Your template at <code><a href="{{ 'templates/default/index.html.twig'|file_link(0) }}">templates/default/index.html.twig</a></code></li>
+    </ul>
+    <div class="check-scss-import">123</div>
+    <img src="{{ asset('assets/static/images/Antarctica-7-2MB3.jpg') }}" alt="">
+
+    <ul class="fa-ul">
+        <li><i class="fa-li fa fa-check-square"></i>List icons</li>
+        <li><i class="fa-li fa fa-check-square"></i>can be used</li>
+        <li><i class="fa-li fa fa-spinner fa-spin"></i>as bullets</li>
+        <li><i class="fa-li fa fa-square"></i>in lists</li>
+    </ul>
+
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/module1.js') }}"></script>
+{% endblock %}
