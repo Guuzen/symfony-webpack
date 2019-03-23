@@ -21,14 +21,21 @@ const useDevServer = !isProd;
 const useVersioning = isProd;
 const useMinification = isProd;
 const disableImagesProcessing = true;
-const assetsSrcFolder = path.resolve(__dirname, 'assets');
-const assetsPublicPath = '/assets/';
+
+const assetsSrcFolder = 'assets';
+const publicFolder = 'public';
+const assetsPublicFolder = 'assets';
+const twigTemplatesFolder = 'templates';
+
+const assetsSrcPath = path.resolve(__dirname, assetsSrcFolder);
+
+// slashes are important
 const publicPath = (() => {
     if (useDevServer) {
         require('dotenv').config();
-        return process.env.ASSETS_BASE_URL + assetsPublicPath;
+        return process.env.ASSETS_BASE_URL + '/' + assetsPublicFolder + '/';
     } else {
-        return assetsPublicPath;
+        return '/' + assetsPublicFolder + '/';
     }
 })();
 
@@ -36,13 +43,13 @@ const webpackConfig = {
     mode: process.env.NODE_ENV,
     devtool: useSourcemaps ? 'inline-source-map' : false,
     entry: {
-        module1: path.resolve(assetsSrcFolder, 'module1', 'main.js'),
-        module2: path.resolve(assetsSrcFolder, 'module2', 'main.js'),
-        admin: path.resolve(assetsSrcFolder, 'admin', 'main.js'),
+        module1: path.resolve(assetsSrcPath, 'module1', 'main.js'),
+        module2: path.resolve(assetsSrcPath, 'module2', 'main.js'),
+        admin: path.resolve(assetsSrcPath, 'admin', 'main.js'),
     },
     output: {
         filename: '[name]' + (useVersioning ? '-[contenthash:8]' : '') + '.js',
-        path: path.resolve(__dirname, 'public', 'assets'),
+        path: path.resolve(__dirname, publicFolder, assetsPublicFolder),
         publicPath: publicPath,
     },
     optimization: {
@@ -62,7 +69,7 @@ const webpackConfig = {
         host: url.parse(publicPath).hostname,
         port: url.parse(publicPath).port,
         contentBase:
-            glob.sync('templates/**/')
+            glob.sync(twigTemplatesFolder + '/**/')
         ,
         watchContentBase: true,
         headers: { 'Access-Control-Allow-Origin': '*' },
@@ -151,7 +158,7 @@ const webpackConfig = {
     plugins: [
         new CopyPlugin([
             {
-                from: path.resolve(assetsSrcFolder, 'static'),
+                from: path.resolve(assetsSrcPath, 'static'),
                 to: 'static/[path][name]' + (useVersioning ? '-[hash:8]' : '') + '.[ext]',
             },
         ]),
@@ -160,14 +167,16 @@ const webpackConfig = {
         }),
         new ManifestPlugin({
             writeToFileEmit: true,
-            basePath: 'assets/',
+            basePath: assetsPublicFolder + '/',
+            // paths for twig files should not be in public folder (for favicons.html.twig)
             filter: (file) => {
                 if (path.extname(file.name) === '.twig') {
                     return false;
                 }
-                return file.name.indexOf('assets/favicons') !== 0;
+                return file.name.indexOf(assetsPublicFolder + '/favicons') !== 0;
             },
             map: (file) => {
+                // because of for dumping static assets via copy webpack plugin filename will contain hashes for some reason
                 if (useVersioning) {
                     file.name = file.name.replace(/(-[a-f0-9]{8})(\..*)$/, '$2');
                 }
@@ -185,12 +194,13 @@ const webpackConfig = {
             ],
         }),
         new HtmlPlugin({
-            filename: path.resolve(__dirname, 'templates', 'favicons.html.twig'),
+            filename: path.resolve(__dirname, twigTemplatesFolder, 'favicons.html.twig'),
             templateContent: '',
+            // do not need full page html tags, only links for favicons
             inject: false,
         }),
         new WebappPlugin({
-            logo: './assets/favicon.png',
+            logo: path.resolve(assetsSrcPath, 'favicon.png'),
             prefix: 'favicons' + (useVersioning ? '-[contenthash:8]' : ''),
             inject: 'force',
         }),
