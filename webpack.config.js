@@ -20,7 +20,7 @@ const useSourcemaps = !isProd;
 const useDevServer = !isProd;
 const useVersioning = isProd;
 const useMinification = isProd;
-const disableImagesProcessing = !isProd;
+const disableImagesProcessing = true;
 const assetsSrcFolder = path.resolve(__dirname, 'assets');
 const assetsPublicPath = '/assets/';
 const publicPath = (() => {
@@ -38,6 +38,7 @@ const webpackConfig = {
     entry: {
         module1: path.resolve(assetsSrcFolder, 'module1', 'main.js'),
         module2: path.resolve(assetsSrcFolder, 'module2', 'main.js'),
+        admin: path.resolve(assetsSrcFolder, 'admin', 'main.js'),
     },
     output: {
         filename: '[name]' + (useVersioning ? '-[contenthash:8]' : '') + '.js',
@@ -106,6 +107,10 @@ const webpackConfig = {
                         },
                     },
                 ],
+            },
+            {
+                test: /\.css/i,
+                loader: 'css-loader',
             },
             {
                 test: /\.js$/i,
