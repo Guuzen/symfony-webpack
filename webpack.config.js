@@ -113,7 +113,9 @@ const webpackConfig = {
                             sourceMapContents: false,
                         },
                     },
-                ],
+                // remove css-hot-loader from production build since it change hashes of js files on every build
+                // even if content of this files absolutely identical
+                ].filter((loader, index) => !isProd || 0 !== index)
             },
             {
                 test: /\.css/i,
